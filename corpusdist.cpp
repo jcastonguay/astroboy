@@ -146,7 +146,7 @@ void Fini(int code, void *v)
   for (int t=0; t<numThreads; t++)
 	if (icount[t].blocks != NULL)
 		for (myblock *b = icount[t].blocks; b != NULL ; b=b->next)
-			OutFile<< b->a <<endl;
+			OutFile<< StringFromAddrint(b->a) <<endl;
   OutFile<<"END";
   OutFile.close();
 }
