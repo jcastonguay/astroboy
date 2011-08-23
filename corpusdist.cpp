@@ -1,12 +1,18 @@
+#include <string>
 #include <iostream>
 #include <fstream>
 #include <malloc.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include "pin.H"
 
 /*
-TODO:
 
-Add support for forks -follow_execv
+requires -follow_execv for forks.
+
+
+TODO:
+Give coverage for execv/forks in same file? use getpid
 Report on simple issues if found. ie double free.
 
 */
@@ -49,7 +55,10 @@ struct THREAD_DATA
 
 THREAD_DATA icount[MaxNumThreads];
 
-KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE,  "pintool", "o", "corpusdist.out", "specify file name for the output file");
+std::ostringstream o;
+o<<"corpusdist.out."<<getpid();
+
+KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE,  "pintool", "o", o.str(), "specify file name for the output file");
 
 int Usage()
 {
