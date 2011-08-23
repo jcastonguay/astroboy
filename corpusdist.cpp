@@ -2,8 +2,6 @@
 #include <iostream>
 #include <fstream>
 #include <malloc.h>
-#include <sys/types.h>
-#include <unistd.h>
 #include "pin.H"
 
 /*
@@ -56,7 +54,7 @@ struct THREAD_DATA
 THREAD_DATA icount[MaxNumThreads];
 
 std::ostringstream o;
-o<<"corpusdist.out."<<getpid();
+o<<"corpusdist.out."<<PIN_GetPid();
 
 KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE,  "pintool", "o", o.str(), "specify file name for the output file");
 
