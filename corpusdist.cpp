@@ -1,9 +1,10 @@
 #include <string>
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <malloc.h>
 #include "pin.H"
-
+using namespace std;
 /*
 
 requires -follow_execv for forks.
@@ -53,10 +54,7 @@ struct THREAD_DATA
 
 THREAD_DATA icount[MaxNumThreads];
 
-std::ostringstream o;
-o<<"corpusdist.out."<<PIN_GetPid();
-
-KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE,  "pintool", "o", o.str(), "specify file name for the output file");
+KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE,  "pintool", "o", "corpusdist.out", "specify file name for the output file");
 
 int Usage()
 {
@@ -139,7 +137,10 @@ void Doom(void * v)
 void Fini(int code, void *v)
 {
   ofstream OutFile;
-  OutFile.open(KnobOutputFile.Value().c_str());
+  ostringstream o;
+  o.clear(); o.str("");
+  o<<KnobOutputFile.Value().c_str()<<"."<< PIN_GetPid();
+  OutFile.open(o.str().c_str());
   OutFile.setf(ios::showbase);
   for (int t=0; t<numThreads; t++)
 	if (icount[t].blocks != NULL)
@@ -163,5 +164,5 @@ int main(int argc, char * argv[])
   
 
   PIN_StartProgram();
-  retrn 0;
+  return 0;
 }
